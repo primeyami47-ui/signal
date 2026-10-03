@@ -55,10 +55,6 @@ const en: Content = {
 
   zone: ['Driving zone', 'Licence B', 'Licence A', 'Licence C', 'Licence D', 'Highway code', 'Back on the road'],
 
-  partnersRef: 'Ref.',
-  partnersTitle: 'They pay for their teams’ licences',
-  partners: ['Trans Atlas', 'Coursier Express', 'Bus Océan', 'Ferme du Gharb', 'Chantiers Bouregreg', 'Taxi Agdal'],
-
   licences: {
     eyebrow: 'A1 · Our licences',
     title: ['Five courses.', 'One road.'],
@@ -100,37 +96,55 @@ const en: Content = {
   },
 
   test: {
-    tag: 'Check · 10 seconds',
+    tag: 'Check · 1 minute',
     title: ['Ready for', 'the theory?'],
-    lead: 'A real exam question, marked on the spot. The other forty are in class or on the app.',
-    step: 'Question 1 / 40',
-    question: 'Steady amber light, you are approaching the junction. You must:',
-    choices: [
-      { id: 'a', label: 'Speed up to get through' },
-      { id: 'b', label: 'Stop, unless it would be dangerous' },
-      { id: 'c', label: 'Sound the horn and go' },
+    lead: 'Three real exam questions, marked on the spot. The other forty are in class or on the app.',
+    step: 'Question {n} / {total}',
+    next: 'Next question',
+    seeScore: 'See my score',
+    scoreTitle: 'Your score',
+    score: '{s} out of {n}',
+    verdicts: ['The code takes revision: come to class, we’ll do it together.', 'Nearly! You are missing a few reflexes.', 'Well done: you are ready to move on to driving.', 'Perfect! Off to the track.'],
+    again: 'Start again',
+    book: 'Book a lesson',
+    correct: 'Correct',
+    wrong: 'Wrong',
+    questions: [
+      { q: 'Steady amber light, you are approaching the junction. You must:', explain: 'An amber light means stop, unless braking would be dangerous.',
+        choices: ['Speed up to get through', 'Stop, unless it would be dangerous', 'Sound the horn and go'], answer: 1 },
+      { q: 'In a built-up area, the usual maximum speed is:', explain: 'In town the usual limit is 60 km/h, unless a sign says otherwise.',
+        choices: ['30 km/h', '60 km/h', '90 km/h'], answer: 1 },
+      { q: 'A pedestrian steps onto the crossing in front of you. You must:', explain: 'A pedestrian already crossing has priority: slow down, and stop if needed.',
+        choices: ['Slow down and stop', 'Sound the horn so they hurry', 'Speed up to get through first'], answer: 0 },
     ],
-    answer: 'b',
-    right: 'Correct: an amber light means stop, unless braking would be dangerous.',
-    wrong: 'Wrong: an amber light means stop, unless braking would be dangerous.',
   },
 
-  reviews: {
-    eyebrow: 'C3 · Reviews',
-    title: ['They passed', 'their test.'],
-    figures: [
-      { value: 87, unit: '%', label: 'pass rate at the first attempt' },
-      { value: 2300, unit: '', label: 'licences since we opened' },
-      { value: 14, unit: '', label: 'state-certified instructors' },
-      { value: 9, unit: '', label: 'dual-control cars and motorbikes' },
+  dash: {
+    eyebrow: 'C3 · Dashboard',
+    title: ['The numbers,', 'on the clock.'],
+    passRate: 87,
+    gauge: 'pass rate at the first attempt',
+    odo: [
+      { value: 2300, label: 'licences since we opened' },
+      { value: 14, label: 'state-certified instructors' },
+      { value: 9, label: 'dual-control cars and motorbikes' },
     ],
+  },
+
+  cards: {
+    eyebrow: 'Student cards',
+    title: ['They passed', 'their test.'],
+    header: 'BITUME · STUDENT CARD',
+    name: 'Name',
+    licence: 'Licence',
+    stamp: 'PASSED',
     list: [
       { quote: 'I had failed twice elsewhere. Here, the mock test on the real route changed everything: on the day, nothing caught me out.',
-        name: 'Imane', role: 'Licence B · passed on the third attempt' },
+        name: 'Imane', licence: 'B', role: 'passed on the third attempt' },
       { quote: 'My boss paid for my C licence. Six weeks later I was driving my own truck.',
-        name: 'Youssef', role: 'HGV driver' },
+        name: 'Youssef', licence: 'C', role: 'HGV driver' },
       { quote: 'At 52 I hadn’t driven for twenty years. Four hours of refresher lessons, and I’m back on the motorway on my own.',
-        name: 'Latifa', role: 'Back on the road' },
+        name: 'Latifa', licence: '+', role: 'back on the road' },
     ],
   },
 

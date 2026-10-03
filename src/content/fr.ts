@@ -59,10 +59,6 @@ const fr = {
 
   zone: ['Zone de conduite', 'Permis B', 'Permis A', 'Permis C', 'Permis D', 'Code de la route', 'Remise en route'],
 
-  partnersRef: 'Réf.',
-  partnersTitle: 'Ils financent le permis de leurs équipes',
-  partners: ['Trans Atlas', 'Coursier Express', 'Bus Océan', 'Ferme du Gharb', 'Chantiers Bouregreg', 'Taxi Agdal'],
-
   licences: {
     eyebrow: 'A1 · Nos permis',
     title: ['Cinq formations.', 'Une seule route.'],
@@ -104,37 +100,55 @@ const fr = {
   },
 
   test: {
-    tag: 'Contrôle · 10 secondes',
+    tag: 'Contrôle · 1 minute',
     title: ['Prêt pour', 'le code ?'],
-    lead: 'Une vraie question d’examen, corrigée sur place. Les quarante autres, c’est en salle ou sur l’appli.',
-    step: 'Question 1 / 40',
-    question: 'Feu orange fixe, vous approchez du carrefour. Vous devez :',
-    choices: [
-      { id: 'a', label: 'Accélérer pour passer' },
-      { id: 'b', label: 'Vous arrêter, sauf si c’est dangereux' },
-      { id: 'c', label: 'Klaxonner et passer' },
+    lead: 'Trois vraies questions d’examen, corrigées sur place. Les quarante autres, c’est en salle ou sur l’appli.',
+    step: 'Question {n} / {total}',
+    next: 'Question suivante',
+    seeScore: 'Voir mon score',
+    scoreTitle: 'Votre score',
+    score: '{s} sur {n}',
+    verdicts: ['Le code se révise : venez en salle, on le fait ensemble.', 'Presque ! Il vous manque quelques réflexes.', 'Bien joué : vous avez le niveau pour passer à la conduite.', 'Sans faute ! Direction la piste.'],
+    again: 'Recommencer',
+    book: 'Réserver une leçon',
+    correct: 'Bonne réponse',
+    wrong: 'Raté',
+    questions: [
+      { q: 'Feu orange fixe, vous approchez du carrefour. Vous devez :', explain: 'Le feu orange impose l’arrêt, sauf si freiner serait dangereux.',
+        choices: ['Accélérer pour passer', 'Vous arrêter, sauf si c’est dangereux', 'Klaxonner et passer'], answer: 1 },
+      { q: 'En agglomération, la vitesse maximale autorisée est en principe de :', explain: 'En ville, la limite habituelle est de 60 km/h, sauf panneau contraire.',
+        choices: ['30 km/h', '60 km/h', '90 km/h'], answer: 1 },
+      { q: 'Un piéton s’engage sur le passage devant vous. Vous devez :', explain: 'Le piéton engagé est prioritaire : on ralentit, et on s’arrête s’il le faut.',
+        choices: ['Ralentir et vous arrêter', 'Klaxonner pour qu’il se dépêche', 'Accélérer pour passer avant lui'], answer: 0 },
     ],
-    answer: 'b',
-    right: 'Bonne réponse : le feu orange impose l’arrêt, sauf si freiner serait dangereux.',
-    wrong: 'Raté : le feu orange impose l’arrêt, sauf si freiner serait dangereux.',
   },
 
-  reviews: {
-    eyebrow: 'C3 · Avis',
-    title: ['Ils ont eu', 'le permis.'],
-    figures: [
-      { value: 87, unit: '%', label: 'de réussite au premier passage' },
-      { value: 2300, unit: '', label: 'permis obtenus depuis l’ouverture' },
-      { value: 14, unit: '', label: 'moniteurs diplômés d’État' },
-      { value: 9, unit: '', label: 'voitures et motos double commande' },
+  dash: {
+    eyebrow: 'C3 · Tableau de bord',
+    title: ['Les chiffres,', 'au compteur.'],
+    passRate: 87,
+    gauge: 'de réussite au premier passage',
+    odo: [
+      { value: 2300, label: 'permis obtenus depuis l’ouverture' },
+      { value: 14, label: 'moniteurs diplômés d’État' },
+      { value: 9, label: 'voitures et motos double commande' },
     ],
+  },
+
+  cards: {
+    eyebrow: 'Cartes d’élèves',
+    title: ['Ils ont eu', 'le permis.'],
+    header: 'BITUME · CARTE D’ÉLÈVE',
+    name: 'Nom',
+    licence: 'Permis',
+    stamp: 'REÇU',
     list: [
       { quote: 'J’avais raté deux fois ailleurs. Ici, l’examen blanc sur le vrai parcours a tout changé : le jour J, rien ne m’a surprise.',
-        name: 'Imane', role: 'Permis B · reçue au troisième essai' },
+        name: 'Imane', licence: 'B', role: 'reçue au troisième essai' },
       { quote: 'Mon patron a financé le permis C. Six semaines plus tard, je conduisais mon propre camion.',
-        name: 'Youssef', role: 'Chauffeur poids lourd' },
+        name: 'Youssef', licence: 'C', role: 'chauffeur poids lourd' },
       { quote: 'À 52 ans, je n’avais plus conduit depuis vingt ans. Quatre heures de remise en route, et je reprends l’autoroute seule.',
-        name: 'Latifa', role: 'Remise en route' },
+        name: 'Latifa', licence: '+', role: 'remise en route' },
     ],
   },
 

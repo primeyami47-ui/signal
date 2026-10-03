@@ -311,7 +311,7 @@ button.link { border: 0; padding: 0; cursor: pointer; background-color: transpar
 /* L'arabe est une écriture liée : aucun interlettrage. */
 :lang(ar) { letter-spacing: 0 !important; }
 /* Le coufique a besoin de plus d'interligne que les capitales étroites. */
-:lang(ar) :is(h1, h2, h3, .t-h2, .t-h3, .shero__h, .sdiag__h, .sdiag__q, .ftr__line, .menu__label, .plate__title, .route__label) { line-height: 1.35; }
+:lang(ar) :is(h1, h2, h3, .t-h2, .t-h3, .shero__h, .sdiag__h, .sdiag__q, .ftr__line, .menu__label, .plate__title, .route__label, .quiz__q, .quiz__score, .gauge__value, .scard__fields dd) { line-height: 1.4; }
 :lang(ar) .shero__h { font-size: clamp(2.8rem, 6vw, 5.4rem); }
 /* Le coufique est bien plus large que les capitales étroites latines. */
 :lang(ar) .sdiag__h { font-size: clamp(2.6rem, 6vw, 5rem); }
@@ -323,3 +323,8 @@ button.link { border: 0; padding: 0; cursor: pointer; background-color: transpar
 [dir="rtl"] :is(.btn, .link):hover .arrow { transform: scaleX(-1) translateX(4px); }
 [dir="rtl"] .btn::before { transform: translateX(101%); }
 [dir="rtl"] .btn:hover::before { transform: none; }
+
+/* Le mot géant du pied de page : le coufique est bien plus haut et plus
+   large que les capitales étroites latines, on le réduit pour qu'il tienne
+   en entier. */
+:lang(ar) .ftr__giant { font-size: 15vw; line-height: 1.25; margin-bottom: -.6vw; font-weight: 900; }

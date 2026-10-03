@@ -241,3 +241,30 @@ export function ZoneBand({ items }: { items: string[] }) {
     </div>
   )
 }
+
+/* ======================================================= cartes d'élèves ===
+   Les avis sont des cartes d'élève Bitume : une photo (ici l'initiale), un
+   permis, et le tampon « REÇU » posé de travers sur la carte. */
+
+export function StudentCards() {
+  const t = useContent().cards
+  return (
+    <ul className="scards">
+      {t.list.map((c, i) => (
+        <li key={c.name} className="scard" style={{ '--i': i } as CSSProperties}>
+          <p className="scard__head"><span>{t.header}</span><span className="scard__no t-num" dir="ltr">N° 0{i + 1}</span></p>
+          <div className="scard__body">
+            <div className="scard__photo" aria-hidden="true">{[...c.name.normalize('NFD')][0]}</div>
+            <dl className="scard__fields">
+              <div><dt>{t.name}</dt><dd>{c.name}</dd></div>
+              <div><dt>{t.licence}</dt><dd className="t-num" dir="ltr">{c.licence === '+' ? '—' : c.licence}</dd></div>
+            </dl>
+            <span className="scard__stamp" aria-hidden="true">{t.stamp}</span>
+          </div>
+          <blockquote className="scard__quote">{c.quote}</blockquote>
+          <p className="scard__role">{c.role}</p>
+        </li>
+      ))}
+    </ul>
+  )
+}

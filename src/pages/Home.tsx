@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import Seo from '../components/Seo'
 import Reveal, { Arrow } from '../components/Reveal'
-import Figures from '../components/Figures'
-import { FlapBoard, Route, SignPlates, ZoneBand } from '../components/Signal'
+import Dash from '../components/Dash'
+import Quiz from '../components/Quiz'
+import { FlapBoard, Route, SignPlates, StudentCards, ZoneBand } from '../components/Signal'
 import { useContent } from '../content'
 import { useLang } from '../i18n'
 import './Home.css'
@@ -10,10 +10,6 @@ import './Home.css'
 export default function Home() {
   const t = useContent()
   const lang = useLang()
-  const quiz = t.test
-  // Le test du code : une vraie question, corrigée sur place.
-  const [picked, setPicked] = useState<string | null>(null)
-  const right = picked === quiz.answer
 
   return (
     <>
@@ -26,7 +22,7 @@ export default function Home() {
         <div className="wrap shero__in">
           <div className="shero__text">
             <p className="shero__proof">
-              <span className="shero__badge t-num">{t.reviews.figures[0].value}%</span>
+              <span className="shero__badge t-num">{t.dash.passRate}%</span>
               {t.hero.proof}
             </p>
             <h1 className="shero__h">
@@ -52,16 +48,6 @@ export default function Home() {
 
       <ZoneBand items={t.zone} />
 
-      {/* ------------------------------------------------------ confiance */}
-      <section className="slogos" aria-label={t.partnersTitle}>
-        <div className="wrap">
-          <p className="slogos__h"><span>{t.partnersRef}</span> {t.partnersTitle}</p>
-          <ul className="slogos__row slogos__row--names">
-            {t.partners.map((p) => <li key={p}>{p}</li>)}
-          </ul>
-        </div>
-      </section>
-
       {/* ------------------------------------------------------------ permis */}
       <section className="sec ssvc" id="permis">
         <div className="wrap">
@@ -77,6 +63,20 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ---------------------------------------------------------- test
+          Le test du code vient tout de suite après les permis : c'est la
+          première chose qu'on peut faire, avant même de s'inscrire. */}
+      <section className="sdiag on-dark" id="test">
+        <div className="wrap sdiag__in">
+          <Reveal className="sdiag__text">
+            <p className="sdiag__tag">{t.test.tag}</p>
+            <h2 className="sdiag__h">{t.test.title[0]}<br />{t.test.title[1]}</h2>
+            <p className="t-lead">{t.test.lead}</p>
+          </Reveal>
+          <Reveal delay={80} className="sdiag__card"><Quiz /></Reveal>
+        </div>
+      </section>
+
       {/* ---------------------------------------------------------- parcours */}
       <section className="sec sec--soft sroute" id="parcours">
         <div className="wrap">
@@ -89,50 +89,25 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------- test */}
-      <section className="sdiag on-dark" id="test">
-        <div className="wrap sdiag__in">
-          <Reveal className="sdiag__text">
-            <p className="sdiag__tag">{quiz.tag}</p>
-            <h2 className="sdiag__h">{quiz.title[0]}<br />{quiz.title[1]}</h2>
-            <p className="t-lead">{quiz.lead}</p>
+      {/* --------------------------------------------------------- tableau de bord */}
+      <section className="sec sdash" id="avis">
+        <div className="wrap">
+          <Reveal className="head head--center">
+            <span className="eyebrow" style={{ ['--dot' as string]: 'var(--black)' }}>{t.dash.eyebrow}</span>
+            <h2 className="t-h2">{t.dash.title[0]}<br />{t.dash.title[1]}</h2>
           </Reveal>
-          <Reveal delay={80} className="sdiag__card">
-            <div className="sdiag__bar" aria-hidden="true"><span /></div>
-            <p className="sdiag__step">{quiz.step}</p>
-            <p className="sdiag__q">{quiz.question}</p>
-            <div className="sdiag__chips">
-              {quiz.choices.map((c) => (
-                <button key={c.id} type="button" aria-pressed={picked === c.id}
-                        className={`chip${picked === c.id ? (c.id === quiz.answer ? ' is-right' : ' is-wrong') : ''}`}
-                        onClick={() => setPicked(c.id)}>
-                  {c.label}
-                </button>
-              ))}
-            </div>
-            <p className={`sdiag__result${picked ? (right ? ' is-right' : ' is-wrong') : ''}`} aria-live="polite">
-              {picked && (right ? quiz.right : quiz.wrong)}
-            </p>
-          </Reveal>
+          <Dash />
         </div>
       </section>
 
       {/* ------------------------------------------------------------- avis */}
-      <section className="sec sproof" id="avis">
+      <section className="sec scardsec">
         <div className="wrap">
           <Reveal className="head">
-            <span className="eyebrow" style={{ ['--dot' as string]: 'var(--orange)' }}>{t.reviews.eyebrow}</span>
-            <h2 className="t-h2">{t.reviews.title[0]}<br />{t.reviews.title[1]}</h2>
+            <span className="eyebrow" style={{ ['--dot' as string]: 'var(--orange)' }}>{t.cards.eyebrow}</span>
+            <h2 className="t-h2">{t.cards.title[0]}<br />{t.cards.title[1]}</h2>
           </Reveal>
-          <Reveal><Figures /></Reveal>
-          <ul className="squotes">
-            {t.reviews.list.map((r, i) => (
-              <Reveal as="li" key={r.name} delay={i * 80} className="squote">
-                <blockquote>{lang === 'fr' ? `« ${r.quote} »` : lang === 'ar' ? `«${r.quote}»` : `“${r.quote}”`}</blockquote>
-                <p className="squote__who"><strong>{r.name}</strong><span>{r.role}</span></p>
-              </Reveal>
-            ))}
-          </ul>
+          <StudentCards />
         </div>
       </section>
 

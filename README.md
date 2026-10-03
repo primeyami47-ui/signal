@@ -30,6 +30,14 @@ bandes de danger, plaques émaillées. Les titres sont en capitales très
   comptent à l’entrée dans l’écran, un menu mobile façon panneau noir, et
   « BITUME » en géant au pied de page.
 
+## Ce qui la distingue
+
+- **Un vrai test du code** (3 questions d’examen, correction et explication
+  immédiates, score final) placé juste après les permis.
+- **Un tableau de bord** : un cadran dont l’aiguille monte jusqu’au taux de
+  réussite, et des compteurs de voiture pour les autres chiffres.
+- **Des avis en cartes d’élève Bitume**, tampon « REÇU » posé de travers.
+
 ## Trois langues
 
 Français à la racine, anglais sous `/en/`, arabe sous `/ar/`, chaque version
