@@ -1,0 +1,167 @@
+/* =============================================================== hero === */
+
+.shero {
+  position: relative; overflow: hidden; isolation: isolate;
+  background: var(--yellow); color: var(--black);
+  padding-block: clamp(2.5rem, 6vw, 5rem) clamp(5rem, 10vw, 8rem);
+  border-bottom: 3px solid var(--black);
+}
+/* Quadrillage fin, comme un plan de signalisation. */
+.shero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: .16;
+  background-image: linear-gradient(var(--black) 1px, transparent 1px), linear-gradient(90deg, var(--black) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(90deg, transparent, #000 60%);
+}
+.shero__in {
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: clamp(2rem, 5vw, 4.5rem); align-items: center;
+}
+.shero__proof {
+  display: block; margin-bottom: 1.5rem; line-height: 2;
+  font-family: var(--mono); font-size: .8rem; font-weight: 500; letter-spacing: .04em; text-transform: uppercase;
+}
+.shero__badge {
+  display: inline-grid; place-items: center; vertical-align: middle; margin-right: .6rem; min-width: 2rem; height: 2rem; padding-inline: .4rem;
+  background: var(--black); color: var(--yellow); border-radius: 4px;
+  font-family: var(--display); font-weight: 900; font-stretch: 70%; font-size: 1.2rem;
+}
+
+.shero__h {
+  font-weight: 900; font-stretch: 62%;
+  font-size: clamp(3.4rem, 7.4vw, 7.6rem); line-height: .84; letter-spacing: -.01em;
+  margin-bottom: 1.6rem;
+}
+.shero__h .ln { display: block; overflow: hidden; padding: .04em .1em .08em 0; margin-bottom: -.04em; }
+.shero__h .ln > span { display: inline-block; animation: s-up .8s var(--ease) both; }
+.shero__h .ln:nth-child(2) > span { animation-delay: .1s; }
+@keyframes s-up { from { transform: translateY(105%); } to { transform: none; } }
+/* « sans détour. » dans une plaque noire, comme un panneau. */
+.shero__box {
+  background: var(--black); color: var(--yellow);
+  padding: .02em .14em .04em; border-radius: .06em;
+  box-shadow: .06em .06em 0 var(--orange);
+}
+.shero__lead { font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.5; max-width: 33rem; margin-bottom: 2rem; color: var(--black); }
+.shero__cta { display: flex; flex-wrap: wrap; gap: 1rem; }
+.shero__note { margin-top: 1.1rem; font-family: var(--mono); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
+
+.shero__board { container-type: inline-size; transform: rotate(1.2deg); animation: board-in 1s .25s var(--spring) both; }
+@keyframes board-in { from { transform: translateY(40px) rotate(6deg); opacity: 0; } to { transform: rotate(1.2deg); opacity: 1; } }
+
+/* Marquage au sol : une flèche blanche qui s'enfonce vers le bas de page. */
+.shero__floor {
+  position: absolute; left: 50%; bottom: 0; width: min(46rem, 90vw); height: clamp(2.5rem, 6vw, 4.5rem);
+  transform: translateX(-50%); fill: #fff; opacity: .9;
+}
+
+@media (max-width: 960px) {
+  .shero__in { grid-template-columns: minmax(0, 1fr); }
+  .shero__board { transform: none; animation-name: board-in-m; }
+  @keyframes board-in-m { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+}
+@media (max-width: 560px) {
+  .shero__h { font-size: clamp(2.7rem, 13.4vw, 5rem); }
+  .shero__cta .btn { flex: 1 1 auto; }
+}
+
+/* ============================================================ confiance == */
+
+.slogos { padding-block: clamp(2.5rem, 5vw, 3.5rem); border-bottom: 3px solid var(--black); }
+.slogos__h {
+  display: flex; align-items: center; gap: .7rem; margin-bottom: 1.8rem;
+  font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink);
+}
+.slogos__h span { background: var(--black); color: var(--yellow); padding: .15rem .4rem; border-radius: 3px; }
+.slogos__row {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  border-top: 2px solid var(--black); border-left: 2px solid var(--black);
+}
+.slogos__row li {
+  display: grid; place-items: center; min-height: 6rem; padding: 1rem;
+  border-right: 2px solid var(--black); border-bottom: 2px solid var(--black);
+  transition: background-color .2s;
+}
+.slogos__row li:hover { background: var(--yellow); }
+.slogos__row img { height: var(--lh); width: auto; max-width: 100%; filter: grayscale(1) contrast(1.1); mix-blend-mode: multiply; }
+.slogos__row li:hover img { filter: none; }
+/* Des noms à la place des logos : capitales étroites, comme sur une plaque. */
+.slogos__row--names li {
+  font-family: var(--display); font-weight: 800; font-stretch: 75%; text-transform: uppercase;
+  font-size: 1.15rem; line-height: 1.05; text-align: center; color: var(--ink);
+}
+@media (max-width: 560px) { .slogos__row { grid-template-columns: repeat(3, minmax(0, 1fr)); } .slogos__row li { min-height: 4.6rem; padding: .6rem; } .slogos__row img { height: calc(var(--lh) * .75); } }
+
+/* ============================================================ expertises = */
+
+.ssvc__diag { margin-top: 2.5rem; font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+
+/* ============================================================== démarche = */
+
+.sroute__more { margin-top: clamp(3rem, 6vw, 4.5rem); text-align: center; }
+
+/* ========================================================== test du code = */
+
+.sdiag { background: var(--black); color: #fff; padding-block: var(--sec); position: relative; overflow: hidden; }
+.sdiag::before, .sdiag::after { content: ""; position: absolute; left: 0; right: 0; height: 18px; background: var(--hazard); background-size: 40px 40px; }
+.sdiag::before { top: 0; } .sdiag::after { bottom: 0; }
+.sdiag__in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+.sdiag__tag { font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--yellow); margin-bottom: 1rem; }
+.sdiag__h {
+  color: #fff; font-weight: 900; font-stretch: 62%;
+  font-size: clamp(3.6rem, 10vw, 8.4rem); line-height: .84; margin-bottom: 1.4rem;
+}
+.sdiag .t-lead { color: rgba(255, 255, 255, .82); max-width: 30rem; }
+
+.sdiag__card {
+  background: #fff; color: var(--black);
+  border: 3px solid var(--yellow); border-radius: var(--r-lg);
+  box-shadow: 10px 10px 0 var(--yellow);
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+}
+.sdiag__bar { height: 10px; border: 2px solid var(--black); border-radius: 3px; margin-bottom: 1.3rem; overflow: hidden; }
+.sdiag__bar span { display: block; height: 100%; width: 25%; background: var(--hazard); background-size: 20px 20px; }
+.sdiag__step { font-family: var(--mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.sdiag__q {
+  font-family: var(--display); font-weight: 900; font-stretch: 66%; text-transform: uppercase;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: .92; color: var(--black);
+  margin: .5rem 0 1.4rem;
+}
+.sdiag__chips { display: flex; flex-wrap: wrap; gap: .7rem; }
+.sdiag .chip { box-shadow: 3px 3px 0 var(--black); }
+/* Correction sur place : vert si c'est juste, orange barré sinon. */
+.sdiag .chip.is-right { background: #1F9D55; color: #fff; }
+.sdiag .chip.is-wrong { background: var(--orange); color: var(--black); text-decoration: line-through; }
+.sdiag__result { min-height: 3rem; margin-top: 1.2rem; font-weight: 600; line-height: 1.45; }
+.sdiag__result.is-right { color: #13703B; }
+.sdiag__result.is-wrong { color: #B23A00; }
+@media (max-width: 860px) { .sdiag__in { grid-template-columns: minmax(0, 1fr); } }
+
+/* =============================================================== preuves = */
+
+/* Les avis : des fiches blanches à bord noir, ombre jaune portée. */
+.squotes {
+  list-style: none; margin: clamp(2.5rem, 5vw, 3.5rem) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem;
+}
+.squote {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem;
+  padding: clamp(1.4rem, 3vw, 2rem); background: #fff; color: var(--black);
+  border: 3px solid var(--black); border-radius: var(--r-lg);
+  box-shadow: 8px 8px 0 var(--yellow);
+}
+.squote:nth-child(2) { box-shadow: 8px 8px 0 var(--orange); }
+.squote:nth-child(3) { box-shadow: 8px 8px 0 var(--isoblue); }
+.squote blockquote { margin: 0; font-size: 1.125rem; line-height: 1.5; font-weight: 500; }
+.squote__who { display: grid; gap: .2rem; padding-top: 1rem; border-top: 2px solid var(--black); }
+.squote__who strong {
+  font-family: var(--display); font-weight: 900; font-stretch: 66%; text-transform: uppercase;
+  font-size: 1.5rem; line-height: 1;
+}
+.squote__who span { font-family: var(--mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 860px) { .squotes { grid-template-columns: 1fr; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .shero__h .ln > span, .shero__board { animation: none; }
+}

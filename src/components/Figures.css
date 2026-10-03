@@ -1,0 +1,28 @@
+/* Chiffres clés : quatre bornes, une calotte de couleur et un très grand
+   nombre en capitales étroites. */
+
+.figs {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(.8rem, 1.6vw, 1.2rem);
+  margin: 0 0 clamp(2.5rem, 5vw, 3.5rem);
+}
+.figs__item {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column-reverse; justify-content: space-between; gap: 1.2rem;
+  min-height: clamp(11rem, 18vw, 14rem);
+  padding: 2.4rem clamp(1.1rem, 2.2vw, 1.6rem) clamp(1.1rem, 2.2vw, 1.5rem);
+  background: #fff; color: var(--black);
+  border: 3px solid var(--black); border-radius: 2.2rem 2.2rem var(--r) var(--r);
+  box-shadow: 5px 5px 0 var(--black);
+}
+.figs__item::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1.4rem; background: var(--cap, var(--yellow)); border-bottom: 3px solid var(--black); }
+.figs__item:nth-child(2) { --cap: var(--orange); }
+.figs__item:nth-child(3) { --cap: var(--isoblue); }
+.figs__item:nth-child(4) { --cap: var(--black); }
+
+.figs__value {
+  margin: 0; font-family: var(--display); font-weight: 900; font-stretch: 62%;
+  font-size: clamp(4.2rem, 8vw, 7rem); line-height: .8; color: inherit; white-space: nowrap;
+}
+.figs__label { font-family: var(--mono); font-size: .78rem; font-weight: 500; letter-spacing: .03em; text-transform: uppercase; line-height: 1.4; max-width: 22ch; }
+
+@media (max-width: 900px) { .figs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

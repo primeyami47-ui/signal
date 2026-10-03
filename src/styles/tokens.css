@@ -1,0 +1,298 @@
+/* ==========================================================================
+   BITUME — identité « Signal »
+
+   Le vocabulaire de la route et de la signalisation : jaune de
+   signalisation, noir, orange de balisage, bleu d'obligation (ISO 7010),
+   bandes de danger, plaques émaillées, tableaux d'affichage. Ici, ce
+   langage ne signale plus un danger : il annonce le permis.
+
+   Typographie : Archivo (axe de chasse 62 → 125 %) en capitales très
+   étroites pour les titres, comme une signalétique routière ; IBM Plex
+   Mono pour les codes, les références et les étiquettes.
+
+   Contrastes (WCAG) : noir sur jaune 14,6:1, noir sur orange 6,9:1,
+   blanc sur bleu 7,4:1, blanc sur noir 18,9:1. Le jaune et l'orange ne
+   portent jamais de texte blanc.
+   ========================================================================== */
+
+:root {
+  /* Couleurs de signalisation. Les noms génériques (cobalt, coral…) restent
+     des rôles pour les composants partagés. */
+  --yellow:  #FFD400;
+  --orange:  #FF6A13;
+  --isoblue: #1D55A5;
+  --black:   #111111;
+
+  --cobalt:       var(--isoblue);
+  --cobalt-d:     #123A74;
+  --cobalt-soft:  #E7EEF8;
+  --coral:        var(--orange);
+  --coral-soft:   #FFE9DC;
+  --saffron:      var(--yellow);
+  --saffron-soft: #FFF6C7;
+  --sky:          #BFD3EE;
+  --sky-soft:     #EEF3FA;
+  --pink:         #E9E6DC;   /* émail gris chaud */
+  --pink-soft:    #F4F2EC;
+
+  --ink:    #111111;
+  --body:   #2E2E2E;
+  --muted:  #5E5E5A;   /* 6,1:1 sur blanc */
+  --white:  #FFFFFF;
+  --soft:   #F2F0EA;   /* papier d'affichage */
+  --line:   #DEDBD2;
+  --line-2: #111111;
+
+  --blue:      var(--isoblue);
+  --blue-d:    var(--cobalt-d);
+  --blue-soft: var(--cobalt-soft);
+  --red:       #D62A12;
+  --red-soft:  #FDE5DF;
+  --surface:   #FFFFFF;
+  --on-blue:   #FFFFFF;
+
+  --display: 'Archivo Variable', 'Archivo', 'Arial Narrow', system-ui, sans-serif;
+  --font:    'Archivo Variable', 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono:    'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --w:      1320px;
+  --w-text: 680px;
+  --gut:    clamp(1rem, 4vw, 3rem);
+  --sec:    clamp(4rem, 10vw, 8rem);
+
+  --r:    6px;
+  --r-lg: 14px;
+
+  --shadow:    0 2px 0 rgba(0, 0, 0, .9);
+  --shadow-lg: 6px 6px 0 var(--black);
+
+  --hazard: repeating-linear-gradient(-45deg, var(--black) 0 14px, var(--yellow) 14px 28px);
+
+  --ease:   cubic-bezier(.2, .7, .3, 1);
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--body);
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Les titres : capitales étroites, très grasses, serrées. */
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 68%;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: .92;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+:focus-visible { outline: 3px solid var(--isoblue); outline-offset: 3px; }
+[tabindex="-1"]:focus { outline: none; }
+a, button, .chip { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+::selection { background: var(--yellow); color: var(--black); }
+
+/* ------------------------------------------------------------ structure -- */
+
+.wrap { width: 100%; max-width: var(--w); margin-inline: auto; padding-inline: var(--gut); }
+.measure { max-width: var(--w-text); }
+.wrap-tight { width: 100%; max-width: calc(var(--w-text) + 2 * var(--gut)); margin-inline: auto; padding-inline: var(--gut); }
+.sec { padding-block: var(--sec); }
+.sec--soft { background: var(--soft); }
+
+.head { display: grid; gap: 1.1rem; max-width: 56rem; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+.head--center { margin-inline: auto; text-align: center; justify-items: center; }
+
+/* Sur-titre : une étiquette de plaque, en mono, avec un code. */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .6rem; justify-self: start;
+  font-family: var(--mono); font-size: .78rem; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink);
+}
+.eyebrow::before {
+  content: ""; width: .9rem; height: .9rem; flex-shrink: 0;
+  background: var(--dot, var(--yellow)); box-shadow: inset 0 0 0 2px var(--black);
+}
+
+.t-display { font-size: clamp(3.4rem, 12vw, 10rem); line-height: .84; font-weight: 900; font-stretch: 62%; }
+.t-h2      { font-size: clamp(2.6rem, 7vw, 5.6rem); line-height: .88; }
+.t-h3      { font-size: clamp(1.4rem, 2.4vw, 1.9rem); line-height: .95; }
+.t-lead    { font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.5; color: var(--body); }
+.t-small   { font-size: .9062rem; line-height: 1.55; color: var(--muted); }
+.t-num     { font-variant-numeric: tabular-nums; }
+.punct     { margin-left: 0; }
+.t-blue    { color: var(--isoblue); }
+.t-tag {
+  font-family: var(--mono); font-size: .75rem; font-weight: 500; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* Un mot surligné : une bande jaune, pleine hauteur, comme un marquage au sol. */
+.mark { position: relative; z-index: 0; white-space: nowrap; }
+.mark::after {
+  content: ""; position: absolute; z-index: -1;
+  left: -.08em; right: -.08em; top: .08em; bottom: .02em;
+  background: var(--mark, var(--yellow));
+  transform-origin: left; transform: scaleX(var(--mark-x, 1));
+}
+
+/* ------------------------------------------------------------- boutons --- */
+/* Des plaques : angles francs, bord noir, ombre pleine qui s'enfonce au clic. */
+
+.btn {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: .8rem;
+  font-family: var(--display); font-size: 1.05rem; font-weight: 800; font-stretch: 80%;
+  text-transform: uppercase; letter-spacing: .02em; text-decoration: none;
+  padding: 1rem 1.3rem 1rem 1.4rem;
+  border: 2px solid var(--black); border-radius: var(--r);
+  box-shadow: 4px 4px 0 var(--black);
+  cursor: pointer;
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease), background-color .2s, color .2s;
+}
+.btn::before {
+  content: ""; position: absolute; z-index: -1; inset: 0;
+  background: var(--btn-fill, var(--yellow));
+  transform: translateX(-101%); transition: transform .35s var(--ease);
+}
+.btn:hover::before { transform: none; }
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--black); }
+.btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--black); }
+.btn svg { transition: transform .3s var(--ease); }
+.btn:hover svg { transform: translateX(4px); }
+.btn:disabled { opacity: .6; cursor: default; }
+
+.btn--primary { background: var(--black); color: #fff; --btn-fill: var(--isoblue); }
+.btn--sun { background: var(--yellow); color: var(--black); --btn-fill: #fff; }
+.btn--quiet { background: #fff; color: var(--black); --btn-fill: var(--yellow); }
+.btn--light { background: #fff; color: var(--black); --btn-fill: var(--yellow); }
+.btn--wa { background: #fff; color: var(--black); --btn-fill: #DDF6E6; }
+.btn--wa .wa { color: #1A8D48; }
+/* Sur fond noir, l'ombre noire disparaîtrait : elle devient jaune. */
+.on-dark .btn { border-color: #fff; box-shadow: 4px 4px 0 var(--yellow); }
+.on-dark .btn:hover { box-shadow: 6px 6px 0 var(--yellow); }
+
+.link {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-family: var(--mono); font-weight: 500; font-size: .9rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--ink); text-decoration: none;
+  background: linear-gradient(var(--yellow), var(--yellow)) 0 100% / 100% .3em no-repeat;
+  transition: background-size .25s var(--ease);
+}
+button.link { border: 0; padding: 0; cursor: pointer; background-color: transparent; }
+.link:hover { background-size: 100% 100%; }
+.link svg { transition: transform .3s var(--ease); }
+.link:hover svg { transform: translateX(3px); }
+
+/* Pastille de choix : une touche de pupitre. */
+.chip {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: var(--mono); font-size: .875rem; font-weight: 500; text-transform: uppercase; letter-spacing: .03em;
+  padding: .7rem 1rem;
+  border: 2px solid var(--black); border-radius: var(--r);
+  background: #fff; color: var(--black);
+  box-shadow: 3px 3px 0 var(--black);
+  cursor: pointer;
+  transition: transform .15s var(--ease), box-shadow .15s var(--ease), background-color .2s;
+}
+.chip:hover { background: var(--yellow); }
+.chip:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--black); }
+.chip.is-on { background: var(--black); color: var(--yellow); }
+
+/* Photographie : bichromie noir et jaune, comme une affiche de chantier. */
+.duo {
+  position: relative; overflow: hidden; isolation: isolate;
+  background: var(--duo-a, var(--yellow));
+}
+.duo img { filter: grayscale(1) contrast(1.25) brightness(1.05); mix-blend-mode: multiply; }
+.duo::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--duo-b, #1b1b1b);
+  mix-blend-mode: lighten;
+}
+
+.tick { flex-shrink: 0; color: var(--isoblue); }
+.tick path { stroke-dasharray: 24; stroke-dashoffset: 0; }
+.in .tick path, .tick--draw path { animation: tick-draw .6s var(--ease) both; animation-delay: var(--d, 0ms); }
+@keyframes tick-draw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+
+/* Bande de danger : sert de filet de séparation. */
+.hazard { height: 18px; background: var(--hazard); background-size: 40px 40px; }
+.hazard--run { animation: hazard 1.6s linear infinite; }
+@keyframes hazard { to { background-position: 40px 0; } }
+
+/* ------------------------------------------------ fin de page (partagée) - */
+
+.close {
+  position: relative; overflow: hidden;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1.5rem 2.5rem; align-items: center;
+  background: var(--yellow); color: var(--black);
+  border: 3px solid var(--black); border-radius: var(--r-lg);
+  box-shadow: 8px 8px 0 var(--black);
+  padding: clamp(1.75rem, 5vw, 3.5rem) clamp(1.75rem, 5vw, 3.5rem) calc(clamp(1.75rem, 5vw, 3.5rem) + 14px);
+}
+.close::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 14px;
+  background: var(--hazard); background-size: 40px 40px;
+}
+.close__who {
+  position: relative; z-index: 1;
+  width: 5.5rem; height: 5.5rem; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--isoblue); color: #fff; box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--black);
+  font-family: var(--display); font-weight: 900; font-stretch: 70%; font-size: 1.9rem;
+}
+.close__text { position: relative; z-index: 1; display: grid; gap: .6rem; }
+.close__text .t-h2 { font-size: clamp(2.4rem, 5vw, 4rem); }
+.close__text .t-lead { color: var(--black); }
+.close__cta { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 1rem; }
+@media (max-width: 900px) {
+  .close { grid-template-columns: auto minmax(0, 1fr); }
+  .close__cta { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+  .close { grid-template-columns: 1fr; }
+  .close__cta .btn { flex: 1; }
+}
+
+/* ------------------------------------------------------------- reveal ---- */
+
+.rv { opacity: 0; transform: translateY(28px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.rv.in { opacity: 1; transform: none; }
+
+/* ------------------------------------------------ transitions de page --- */
+/* Un volet balaie l'écran de gauche à droite, comme une barrière qui se lève. */
+::view-transition-old(root) { animation: vt-out .35s var(--ease) both; }
+::view-transition-new(root) { animation: vt-in .55s var(--ease) both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rv { opacity: 1; transform: none; transition: none; }
+  .btn::before, .btn, .btn svg, .link, .link svg { transition: none; }
+  .in .tick path, .tick--draw path { animation: none; }
+  .hazard--run { animation: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+/* Texte réservé aux lecteurs d'écran. */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
