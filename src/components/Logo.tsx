@@ -31,15 +31,15 @@ export function LogoMark({ tone = 'color', size = 40, className = '', draw = fal
 }
 
 /** Plaque + nom : « BITUME » en capitales étroites, « auto-école » en mono. */
-export default function Logo({ tone = 'color', size = 44, className = '', draw = false }: {
-  tone?: LogoTone; size?: number; className?: string; draw?: boolean
+export default function Logo({ tone = 'color', size = 44, className = '', draw = false, sub }: {
+  tone?: LogoTone; size?: number; className?: string; draw?: boolean; sub: string
 }) {
   const text = tone === 'reverse' || tone === 'white' ? '#fff' : 'var(--black)'
   return (
     <span className={`blogo ${className}`} style={{ color: text }}>
       <LogoMark tone={tone} size={size} draw={draw} />
       <span className="blogo__word" aria-hidden="true">
-        Bitume<small>Auto-école</small>
+        Bitume<small>{sub}</small>
       </span>
     </span>
   )

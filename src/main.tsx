@@ -7,6 +7,8 @@ import { createRoot, hydrateRoot } from 'react-dom/client'
 import '@fontsource-variable/archivo/standard.css'
 import '@fontsource/ibm-plex-mono/400.css'
 import '@fontsource/ibm-plex-mono/500.css'
+// Arabe : Noto Kufi, un coufique géométrique, comme une signalétique.
+import '@fontsource-variable/noto-kufi-arabic'
 import 'lenis/dist/lenis.css'
 import './styles/tokens.css'
 import App from './App'

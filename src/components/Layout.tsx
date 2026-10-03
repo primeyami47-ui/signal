@@ -1,18 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router'
 import type Lenis from 'lenis'
-import { company, licences } from '../data/site'
+import { useContent } from '../content'
+import { dirOf, homeOf, useLang } from '../i18n'
+import LangSwitch from './LangSwitch'
 import { Arrow } from './Reveal'
 import Logo from './Logo'
 import './Layout.css'
 
-// Quatre destinations (les sections de la page), chacune avec son code de panneau.
-const nav = [
-  { to: '#permis', label: 'Permis', code: 'A1' },
-  { to: '#parcours', label: 'Parcours', code: 'B2' },
-  { to: '#avis', label: 'Avis', code: 'C3' },
-  { to: '#contact', label: 'Contact', code: 'D4' },
-]
 
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -33,6 +28,16 @@ export default function Layout() {
   const [stuck, setStuck] = useState(false)
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
+  const lang = useLang()
+  const t = useContent()
+  const { company, nav } = t
+
+  // La langue et le sens de lecture suivent l'adresse (le prérendu les écrit
+  // déjà dans le HTML ; ceci couvre les changements de langue sans rechargement).
+  useEffect(() => {
+    document.documentElement.lang = lang
+    document.documentElement.dir = dirOf(lang)
+  }, [lang])
   const lenis = useRef<Lenis | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -86,24 +91,24 @@ export default function Layout() {
 
   return (
     <>
-      <a className="skip" href="#main">Aller au contenu</a>
+      <a className="skip" href="#main">{t.ui.skip}</a>
 
       {/* Bandeau d'information : une ligne en mono, comme en tête d'un tableau. */}
       <div className="ticker" aria-hidden="true">
         <div className="wrap ticker__in">
-          <span>BITUME/RABAT</span>
-          <span className="ticker__live"><i /> Auto-école ouverte · <Clock /></span>
-          <span className="ticker__hide">Permis B · A · A1 · C · CE · D · Code de la route</span>
+          <span>{t.ui.tickerCity}</span>
+          <span className="ticker__live"><i /> {t.ui.tickerOpen} · <Clock /></span>
+          <span className="ticker__hide">{t.ui.tickerList}</span>
         </div>
       </div>
 
       <header className={`hdr${stuck ? ' hdr--stuck' : ''}${open ? ' hdr--open' : ''}`}>
         <div className="hdr__in wrap">
-          <Link to="/" className="hdr__brand" aria-label={`${company.name}, accueil`} onClick={() => setOpen(false)}>
-            <Logo tone={open ? 'reverse' : 'color'} size={42} draw />
+          <Link to={homeOf(lang)} className="hdr__brand" aria-label={`${company.name}, ${t.ui.home}`} onClick={() => setOpen(false)}>
+            <Logo tone={open ? 'reverse' : 'color'} size={42} draw sub={company.tagline} />
           </Link>
 
-          <nav className="hdr__nav" aria-label="Navigation principale">
+          <nav className="hdr__nav" aria-label={t.ui.navLabel}>
             {nav.map((n) => (
               <a key={n.to} href={n.to} className="hdr__link">
                 <span className="hdr__code">{n.code}</span>{n.label}
@@ -111,12 +116,14 @@ export default function Layout() {
             ))}
           </nav>
 
+          <LangSwitch label={t.ui.langLabel} className="hdr__langs" />
+
           <a href="#test" className="btn btn--sun hdr__cta">
-            Test du code <Arrow />
+            {t.ui.ctaShort} <Arrow />
           </a>
 
           <button className="hdr__burger" aria-expanded={open} aria-controls="menu"
-                  aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+                  aria-label={open ? t.ui.menuClose : t.ui.menuOpen}
                   onClick={() => setOpen((v) => !v)}>
             <span /><span /><span />
           </button>
@@ -125,7 +132,7 @@ export default function Layout() {
 
       {/* Menu mobile : un panneau noir, quatre grandes directions fléchées. */}
       <div id="menu" ref={menuRef} className={`menu${open ? ' is-open' : ''}`} inert={!open}>
-        <nav className="menu__nav wrap" aria-label="Menu">
+        <nav className="menu__nav wrap" aria-label={t.ui.menuLabel}>
           {nav.map((n, i) => (
             <a key={n.to} href={n.to} onClick={() => setOpen(false)}
                style={{ ['--i' as string]: i }} className="menu__link">
@@ -135,8 +142,9 @@ export default function Layout() {
             </a>
           ))}
           <a href="#test" onClick={() => setOpen(false)} className="btn btn--sun menu__cta" style={{ ['--i' as string]: 4 }}>
-            Tester le code <Arrow />
+            {t.ui.cta} <Arrow />
           </a>
+          <LangSwitch label={t.ui.langLabel} className="menu__langs" onPick={() => setOpen(false)} />
           <div className="menu__contact" style={{ ['--i' as string]: 5 }}>
             <a href={`mailto:${company.email}`}>{company.email}</a>
             <span>{company.hours}</span>
@@ -150,34 +158,28 @@ export default function Layout() {
       <footer className="ftr on-dark">
         <div className="hazard" aria-hidden="true" />
         <div className="wrap ftr__top">
-          <p className="ftr__line">Le permis,<br /><span>sans détour.</span></p>
-          <a href="#test" className="btn btn--sun">Tester le code <Arrow /></a>
+          <p className="ftr__line">{t.footer.line1}<br /><span>{t.footer.line2}</span></p>
+          <a href="#test" className="btn btn--sun">{t.ui.cta} <Arrow /></a>
         </div>
 
         <div className="wrap ftr__in">
           <div className="ftr__brand">
-            <Logo tone="reverse" size={44} />
-            <p>
-              Auto-école à Rabat : code de la route, permis B, moto, poids
-              lourd et remise en route.
-            </p>
+            <Logo tone="reverse" size={44} sub={company.tagline} />
+            <p>{t.footer.about}</p>
           </div>
 
           <div className="ftr__col">
-            <h2>A1 · Permis</h2>
-            {licences.map((l) => <a key={l.id} href="#permis">{l.title}</a>)}
+            <h2>{t.footer.colLicences}</h2>
+            {t.licences.list.map((l) => <a key={l.id} href="#permis">{l.title}</a>)}
           </div>
 
           <div className="ftr__col">
-            <h2>B2 · L’auto-école</h2>
-            <a href="#parcours">Le parcours</a>
-            <a href="#avis">Avis d’élèves</a>
-            <a href="#test">Test du code</a>
-            <a href="#contact">Nous écrire</a>
+            <h2>{t.footer.colSchool}</h2>
+            {t.footer.school.map((l) => <a key={l.to} href={l.to}>{l.label}</a>)}
           </div>
 
           <div className="ftr__col">
-            <h2>D4 · Contact</h2>
+            <h2>{t.footer.colContact}</h2>
             <address>{company.address.map((l) => <span key={l}>{l}</span>)}</address>
             <a href={`mailto:${company.email}`}>{company.email}</a>
             <span>{company.hours}</span>
@@ -186,10 +188,10 @@ export default function Layout() {
 
         <div className="wrap ftr__bar">
           <span>© {new Date().getFullYear()} {company.name}</span>
-          <span className="ftr__demo">Marque fictive · site vitrine de démonstration</span>
+          <span className="ftr__demo">{t.footer.demo}</span>
         </div>
 
-        <div className="ftr__giant" aria-hidden="true">BITUME</div>
+        <div className="ftr__giant" aria-hidden="true">{t.footer.giant}</div>
       </footer>
     </>
   )

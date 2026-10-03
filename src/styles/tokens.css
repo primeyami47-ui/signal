@@ -296,3 +296,30 @@ button.link { border: 0; padding: 0; cursor: pointer; background-color: transpar
 
 /* Texte réservé aux lecteurs d'écran. */
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* ================================================================ arabe == */
+/* La version arabe (/ar) se lit de droite à gauche : la mise en page suit
+   (flex et grilles s'inversent seules), ces règles couvrent le reste. */
+
+:root:lang(ar) {
+  --display: 'Noto Kufi Arabic Variable', 'Noto Kufi Arabic', system-ui, sans-serif;
+  --font:    'Noto Kufi Arabic Variable', 'Noto Kufi Arabic', system-ui, sans-serif;
+  /* Le mono n'a pas d'arabe : les codes latins restent en mono, les lettres
+     arabes passent en coufique au lieu d'un mono de secours espacé. */
+  --mono:    'IBM Plex Mono', 'Noto Kufi Arabic Variable', ui-monospace, monospace;
+}
+/* L'arabe est une écriture liée : aucun interlettrage. */
+:lang(ar) { letter-spacing: 0 !important; }
+/* Le coufique a besoin de plus d'interligne que les capitales étroites. */
+:lang(ar) :is(h1, h2, h3, .t-h2, .t-h3, .shero__h, .sdiag__h, .sdiag__q, .ftr__line, .menu__label, .plate__title, .route__label) { line-height: 1.35; }
+:lang(ar) .shero__h { font-size: clamp(2.8rem, 6vw, 5.4rem); }
+/* Le coufique est bien plus large que les capitales étroites latines. */
+:lang(ar) .sdiag__h { font-size: clamp(2.6rem, 6vw, 5rem); }
+:lang(ar) .sdiag__q { font-size: clamp(1.35rem, 2.2vw, 1.75rem); }
+:lang(ar) .plate__title { font-size: clamp(1.6rem, 2.6vw, 2.2rem); }
+
+/* Les flèches pointent dans le sens de lecture ; le balayage des boutons part de la droite. */
+[dir="rtl"] .arrow { transform: scaleX(-1); }
+[dir="rtl"] :is(.btn, .link):hover .arrow { transform: scaleX(-1) translateX(4px); }
+[dir="rtl"] .btn::before { transform: translateX(101%); }
+[dir="rtl"] .btn:hover::before { transform: none; }

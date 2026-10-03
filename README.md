@@ -4,7 +4,9 @@
 l’auto-école, les noms, les chiffres et les avis sont inventés pour
 montrer le design.
 
-**En ligne :** https://primeyami47-ui.github.io/signal/
+**En ligne :** https://primeyami47-ui.github.io/signal/ —
+[English](https://primeyami47-ui.github.io/signal/en/) ·
+[العربية](https://primeyami47-ui.github.io/signal/ar/)
 
 ## Le design
 
@@ -27,6 +29,19 @@ bandes de danger, plaques émaillées. Les titres sont en capitales très
 - Un bandeau d’information en tête avec l’heure du Maroc, des chiffres qui
   comptent à l’entrée dans l’écran, un menu mobile façon panneau noir, et
   « BITUME » en géant au pied de page.
+
+## Trois langues
+
+Français à la racine, anglais sous `/en/`, arabe sous `/ar/`, chaque version
+prérendue, avec un sélecteur de langue dans l’en-tête et le menu. Les textes
+vivent dans `src/content/{fr,en,ar}.ts`. Le test du code est traduit et
+corrigé dans chaque langue.
+
+L’arabe se lit **de droite à gauche** : en-tête, plaques, route et menu se
+retournent, les panneaux de direction pointent vers la chaussée. Le tableau
+à palettes et le bandeau gardent leur sens latin, comme une signalétique
+bilingue. Police arabe : Noto Kufi, un coufique géométrique, sans
+interlettrage.
 
 ## Technique
 

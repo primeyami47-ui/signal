@@ -3,17 +3,21 @@ import Seo from '../components/Seo'
 import Reveal, { Arrow } from '../components/Reveal'
 import Figures from '../components/Figures'
 import { FlapBoard, Route, SignPlates, ZoneBand } from '../components/Signal'
-import { company, figures, partners, quiz, seo, testimonials } from '../data/site'
+import { useContent } from '../content'
+import { useLang } from '../i18n'
 import './Home.css'
 
 export default function Home() {
+  const t = useContent()
+  const lang = useLang()
+  const quiz = t.test
   // Le test du code : une vraie question, corrigée sur place.
   const [picked, setPicked] = useState<string | null>(null)
   const right = picked === quiz.answer
 
   return (
     <>
-      <Seo {...seo.home} />
+      <Seo {...t.seo.home} />
 
       {/* ---------------------------------------------------------- hero
           Jaune de signalisation, un titre en capitales étroites, et le
@@ -22,25 +26,22 @@ export default function Home() {
         <div className="wrap shero__in">
           <div className="shero__text">
             <p className="shero__proof">
-              <span className="shero__badge t-num">{figures[0].value}%</span>
-              de réussite au premier passage
+              <span className="shero__badge t-num">{t.reviews.figures[0].value}%</span>
+              {t.hero.proof}
             </p>
             <h1 className="shero__h">
-              <span className="ln"><span>Le permis,</span></span>
-              <span className="ln"><span className="shero__box">sans détour.</span></span>
+              <span className="ln"><span>{t.hero.line1}</span></span>
+              <span className="ln"><span className="shero__box">{t.hero.line2}</span></span>
             </h1>
-            <p className="shero__lead">
-              Code, conduite, examen&nbsp;: {company.name} vous accompagne de la
-              première leçon jusqu’au permis, en voiture, à moto ou en poids lourd.
-            </p>
+            <p className="shero__lead">{t.hero.lead}</p>
             <div className="shero__cta">
-              <a href="#test" className="btn btn--primary">Tester le code <Arrow /></a>
-              <a href="#permis" className="btn btn--light">Nos permis</a>
+              <a href="#test" className="btn btn--primary">{t.ui.cta} <Arrow /></a>
+              <a href="#permis" className="btn btn--light">{t.hero.alt}</a>
             </div>
-            <p className="shero__note">1 question · 10 secondes · sans inscription</p>
+            <p className="shero__note">{t.hero.note}</p>
           </div>
           <div className="shero__board">
-            <FlapBoard />
+            <FlapBoard key={lang} />
           </div>
         </div>
         {/* Marquage au sol : une flèche géante qui pointe vers la suite. */}
@@ -49,14 +50,14 @@ export default function Home() {
         </svg>
       </section>
 
-      <ZoneBand items={['Zone de conduite', 'Permis B', 'Permis A', 'Permis C', 'Permis D', 'Code de la route', 'Remise en route']} />
+      <ZoneBand items={t.zone} />
 
       {/* ------------------------------------------------------ confiance */}
-      <section className="slogos" aria-label="Ils financent le permis de leurs équipes">
+      <section className="slogos" aria-label={t.partnersTitle}>
         <div className="wrap">
-          <p className="slogos__h"><span>Réf.</span> Ils financent le permis de leurs équipes</p>
+          <p className="slogos__h"><span>{t.partnersRef}</span> {t.partnersTitle}</p>
           <ul className="slogos__row slogos__row--names">
-            {partners.map((p) => <li key={p}>{p}</li>)}
+            {t.partners.map((p) => <li key={p}>{p}</li>)}
           </ul>
         </div>
       </section>
@@ -65,13 +66,13 @@ export default function Home() {
       <section className="sec ssvc" id="permis">
         <div className="wrap">
           <Reveal className="head">
-            <span className="eyebrow">A1 · Nos permis</span>
-            <h2 className="t-h2">Cinq formations.<br />Une seule route.</h2>
+            <span className="eyebrow">{t.licences.eyebrow}</span>
+            <h2 className="t-h2">{t.licences.title[0]}<br />{t.licences.title[1]}</h2>
           </Reveal>
           <SignPlates />
           <p className="ssvc__diag">
-            Pas sûr de votre niveau au code&nbsp;?{' '}
-            <a href="#test" className="link">Faire le test <Arrow /></a>
+            {t.licences.unsure}{' '}
+            <a href="#test" className="link">{t.licences.unsureLink} <Arrow /></a>
           </p>
         </div>
       </section>
@@ -80,9 +81,9 @@ export default function Home() {
       <section className="sec sec--soft sroute" id="parcours">
         <div className="wrap">
           <Reveal className="head head--center">
-            <span className="eyebrow" style={{ ['--dot' as string]: 'var(--isoblue)' }}>B2 · Le parcours</span>
-            <h2 className="t-h2">Quatre étapes.<br />Aucun détour.</h2>
-            <p className="t-lead">Le même trajet pour tous les permis, avec ce qui est inclus à chaque panneau.</p>
+            <span className="eyebrow" style={{ ['--dot' as string]: 'var(--isoblue)' }}>{t.route.eyebrow}</span>
+            <h2 className="t-h2">{t.route.title[0]}<br />{t.route.title[1]}</h2>
+            <p className="t-lead">{t.route.lead}</p>
           </Reveal>
           <Route />
         </div>
@@ -92,13 +93,13 @@ export default function Home() {
       <section className="sdiag on-dark" id="test">
         <div className="wrap sdiag__in">
           <Reveal className="sdiag__text">
-            <p className="sdiag__tag">Contrôle · 10 secondes</p>
-            <h2 className="sdiag__h">Prêt pour<br />le code&nbsp;?</h2>
-            <p className="t-lead">Une vraie question d’examen, corrigée sur place. Les quarante autres, c’est en salle ou sur l’appli.</p>
+            <p className="sdiag__tag">{quiz.tag}</p>
+            <h2 className="sdiag__h">{quiz.title[0]}<br />{quiz.title[1]}</h2>
+            <p className="t-lead">{quiz.lead}</p>
           </Reveal>
           <Reveal delay={80} className="sdiag__card">
             <div className="sdiag__bar" aria-hidden="true"><span /></div>
-            <p className="sdiag__step">Question 1 / 40</p>
+            <p className="sdiag__step">{quiz.step}</p>
             <p className="sdiag__q">{quiz.question}</p>
             <div className="sdiag__chips">
               {quiz.choices.map((c) => (
@@ -120,15 +121,15 @@ export default function Home() {
       <section className="sec sproof" id="avis">
         <div className="wrap">
           <Reveal className="head">
-            <span className="eyebrow" style={{ ['--dot' as string]: 'var(--orange)' }}>C3 · Avis</span>
-            <h2 className="t-h2">Ils ont eu<br />le permis.</h2>
+            <span className="eyebrow" style={{ ['--dot' as string]: 'var(--orange)' }}>{t.reviews.eyebrow}</span>
+            <h2 className="t-h2">{t.reviews.title[0]}<br />{t.reviews.title[1]}</h2>
           </Reveal>
           <Reveal><Figures /></Reveal>
           <ul className="squotes">
-            {testimonials.map((t, i) => (
-              <Reveal as="li" key={t.name} delay={i * 80} className="squote">
-                <blockquote>« {t.quote} »</blockquote>
-                <p className="squote__who"><strong>{t.name}</strong><span>{t.role}</span></p>
+            {t.reviews.list.map((r, i) => (
+              <Reveal as="li" key={r.name} delay={i * 80} className="squote">
+                <blockquote>{lang === 'fr' ? `« ${r.quote} »` : lang === 'ar' ? `«${r.quote}»` : `“${r.quote}”`}</blockquote>
+                <p className="squote__who"><strong>{r.name}</strong><span>{r.role}</span></p>
               </Reveal>
             ))}
           </ul>
@@ -139,16 +140,13 @@ export default function Home() {
       <section className="sec sclose" id="contact">
         <div className="wrap">
           <Reveal className="close">
-            <div className="close__who" aria-hidden="true">B</div>
+            <div className="close__who" aria-hidden="true">{t.close.who}</div>
             <div className="close__text">
-              <h2 className="t-h2">Première leçon offerte.</h2>
-              <p className="t-lead">
-                Écrivez-nous&nbsp;: un moniteur vous répond sous 24&nbsp;heures
-                et fixe votre première heure de conduite.
-              </p>
+              <h2 className="t-h2">{t.close.title}</h2>
+              <p className="t-lead">{t.close.lead}</p>
             </div>
             <div className="close__cta">
-              <a href={`mailto:${company.email}`} className="btn btn--primary">Écrire un message <Arrow /></a>
+              <a href={`mailto:${t.company.email}`} className="btn btn--primary">{t.close.cta} <Arrow /></a>
             </div>
           </Reveal>
         </div>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { board, licences, phases } from '../data/site'
+import { useContent } from '../content'
 import { Arrow } from './Reveal'
 import './Signal.css'
 
@@ -10,16 +10,16 @@ const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefe
    statut passe d'« EXAMEN » à « REÇU ». Les caractères tournent comme de
    vraies palettes. Le HTML pré-rendu montre le tableau final, lisible. */
 
-const ROWS = board
 const W_CODE = 10, W_DOM = 14, W_ST = 8
 const SHOWN = 4
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 const pad = (s: string, n: number) => (s + ' '.repeat(n)).slice(0, n)
 
 interface Line { code: string; dom: string; st: string; ok: boolean }
-const line = (i: number, ok = true): Line => {
-  const [c, d] = ROWS[i % ROWS.length]
-  return { code: pad(c, W_CODE), dom: pad(d, W_DOM), st: pad(ok ? 'REÇU' : 'EXAMEN', W_ST), ok }
+interface Board { rows: [string, string][]; exam: string; pass: string }
+const lineOf = (b: Board, i: number, ok = true): Line => {
+  const [c, d] = b.rows[i % b.rows.length]
+  return { code: pad(c, W_CODE), dom: pad(d, W_DOM), st: pad(ok ? b.pass : b.exam, W_ST), ok }
 }
 
 function Cells({ text, className = '' }: { text: string; className?: string }) {
@@ -36,7 +36,8 @@ function Cells({ text, className = '' }: { text: string; className?: string }) {
 }
 
 export function FlapBoard() {
-  const [lines, setLines] = useState<Line[]>(() => Array.from({ length: SHOWN }, (_, i) => line(i)))
+  const board = useContent().board
+  const [lines, setLines] = useState<Line[]>(() => Array.from({ length: SHOWN }, (_, i) => lineOf(board, i)))
   const next = useRef(SHOWN)
   const slot = useRef(0)
 
@@ -66,23 +67,23 @@ export function FlapBoard() {
       const row = slot.current
       slot.current = (slot.current + 1) % SHOWN
       const i = next.current++
-      roll(row, line(i, false))
+      roll(row, lineOf(board, i, false))
       // Le statut passe à REÇU un instant plus tard : l'examen est réussi.
-      later(() => setLines((ls) => ls.map((l, k) => (k === row ? { ...l, st: pad('REÇU', W_ST), ok: true } : l))), 1500)
+      later(() => setLines((ls) => ls.map((l, k) => (k === row ? { ...l, st: pad(board.pass, W_ST), ok: true } : l))), 1500)
     }
     const start = window.setTimeout(cycle, 1200)
     const id = window.setInterval(cycle, 2600)
     return () => { clearTimeout(start); clearInterval(id); timers.forEach(clearTimeout) }
-  }, [])
+  }, [board])
 
   return (
-    <figure className="flap" aria-label="Tableau des permis préparés par Bitume">
+    <figure className="flap" aria-label={board.label}>
       <figcaption className="flap__top">
-        <span>Tableau des examens</span>
+        <span>{board.title}</span>
         <span className="flap__dot" aria-hidden="true" />
       </figcaption>
       <div className="flap__head" aria-hidden="true">
-        <span>Permis</span><span className="flap__dom-h">Véhicule</span><span>Statut</span>
+        <span>{board.head[0]}</span><span className="flap__dom-h">{board.head[1]}</span><span>{board.head[2]}</span>
       </div>
       <ul className="flap__rows">
         {lines.map((l, i) => (
@@ -97,7 +98,7 @@ export function FlapBoard() {
         ))}
       </ul>
       <p className="flap__foot" aria-hidden="true">
-        <span>Piste 01 · Rabat</span><span>Prochain départ : vous</span>
+        <span>{board.foot[0]}</span><span>{board.foot[1]}</span>
       </p>
     </figure>
   )
@@ -130,6 +131,7 @@ function Picto({ id }: { id: string }) {
 }
 
 export function SignPlates() {
+  const t = useContent().licences
   const list = useRef<HTMLUListElement>(null)
 
   // Sur téléphone, chaque plaque se balance une fois en entrant à l'écran.
@@ -145,18 +147,18 @@ export function SignPlates() {
 
   return (
     <ul className="plates" ref={list}>
-      {licences.map((e, i) => {
+      {t.list.map((e, i) => {
         return (
           <li key={e.id} className={`plate ${PLATES[e.id]}`} style={{ '--i': i } as CSSProperties}>
             <a href="#contact" className="plate__in">
               <span className="plate__screws" aria-hidden="true"><i /><i /></span>
               <span className="plate__top">
-                <span className="plate__code">{e.code === '+' ? 'Bonus' : `Cat. ${e.code}`}</span>
+                <span className="plate__code">{e.code === '+' ? t.bonus : `${t.cat} ${e.code}`}</span>
                 <Picto id={e.id} />
               </span>
               <span className="plate__title">{e.title}</span>
               <span className="plate__short">{e.short}</span>
-              <span className="plate__go">Réserver une leçon <Arrow /></span>
+              <span className="plate__go">{t.book} <Arrow /></span>
             </a>
           </li>
         )
@@ -170,6 +172,7 @@ export function SignPlates() {
    chaussée dont la ligne centrale défile avec la page. */
 
 export function Route() {
+  const t = useContent().route
   const road = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -194,7 +197,7 @@ export function Route() {
     <div className="route" ref={road}>
       <div className="route__road" aria-hidden="true"><span className="route__lane" /><span className="route__car" /></div>
       <ol className="route__signs">
-        {phases.map((ph, i) => (
+        {t.phases.map((ph, i) => (
           <li key={ph.n} className="route__stop" style={{ '--i': i } as CSSProperties}>
             <div className="route__sign">
               <span className="route__km t-num">{ph.n}</span>
@@ -204,15 +207,15 @@ export function Route() {
             <div className="route__body">
               <h3 className="t-h3">{ph.title}</h3>
               <p>{ph.body}</p>
-              <p className="route__deliv"><span>Inclus</span>{ph.deliverable}</p>
-              <span className="route__weeks">Durée · {ph.weeks}</span>
+              <p className="route__deliv"><span>{t.included}</span>{ph.deliverable}</p>
+              <span className="route__weeks">{t.duration} · {ph.weeks}</span>
             </div>
           </li>
         ))}
         <li className="route__stop route__stop--end" style={{ '--i': 4 } as CSSProperties}>
           <div className="route__sign route__sign--end">
             <svg viewBox="0 0 64 64" aria-hidden="true" className="route__done"><path d="M14 33 L27 46 L50 19" fill="none" stroke="currentColor" strokeWidth="9" strokeLinecap="square" /></svg>
-            <span className="route__label">Reçu</span>
+            <span className="route__label">{t.end}</span>
           </div>
         </li>
       </ol>

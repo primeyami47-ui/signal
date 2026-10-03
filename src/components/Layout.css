@@ -37,7 +37,7 @@
 .hdr--open .blogo { color: #fff; }
 
 .hdr__in { display: flex; align-items: center; gap: 1.25rem; min-height: 4.5rem; }
-.hdr__brand { display: flex; text-decoration: none; margin-right: auto; }
+.hdr__brand { display: flex; text-decoration: none; margin-inline-end: auto; }
 
 .hdr__nav { display: flex; align-items: stretch; align-self: stretch; }
 .hdr__link {
@@ -45,10 +45,10 @@
   padding: 0 1.1rem;
   font-family: var(--display); font-weight: 800; font-stretch: 75%; text-transform: uppercase;
   font-size: 1.05rem; letter-spacing: .02em; text-decoration: none; color: var(--black);
-  border-left: 2px solid var(--line);
+  border-inline-start: 2px solid var(--line);
   transition: background-color .2s var(--ease);
 }
-.hdr__link:last-child { border-right: 2px solid var(--line); }
+.hdr__link:last-child { border-inline-end: 2px solid var(--line); }
 .hdr__code {
   font-family: var(--mono); font-size: .68rem; font-weight: 500; font-stretch: 100%;
   padding: .15rem .3rem; border: 1.5px solid currentColor; border-radius: 3px;
@@ -124,11 +124,13 @@ html.menu-open { overflow: hidden; }
 /* --------------------------------------------------------------- skip --- */
 
 .skip {
-  position: absolute; left: -9999px; top: 0; z-index: 100;
+  /* Caché au-dessus de l'écran plutôt qu'à gauche : en arabe, un élément
+     hors champ à gauche élargirait la page. */
+  position: absolute; inset-inline-start: 1rem; top: 0; z-index: 100; transform: translateY(-120%);
   background: var(--yellow); color: var(--black); padding: .85rem 1.4rem;
   font-size: .875rem; text-decoration: none;
 }
-.skip:focus { left: 0; }
+.skip:focus { transform: none; }
 
 /* ------------------------------------------------------------- footer --- */
 
@@ -185,3 +187,22 @@ html.menu-open { overflow: hidden; }
 
 /* Mention de vitrine : marque inventée, site de démonstration. */
 .ftr__demo { opacity: .8; }
+
+[dir="rtl"] .menu__nav > * { transform: translateX(30px); }
+[dir="rtl"] .menu.is-open .menu__nav > * { transform: none; }
+
+/* -------------------------------------------------------------- langues */
+
+.langs { display: flex; border: 2px solid var(--black); border-radius: var(--r); overflow: hidden; background: #fff; }
+.langs__a {
+  min-width: 2.4rem; height: 2.4rem; padding-inline: .45rem; display: grid; place-items: center;
+  font-family: var(--mono); font-size: .78rem; font-weight: 500; color: var(--black); text-decoration: none;
+}
+.langs__a + .langs__a { border-inline-start: 2px solid var(--black); }
+.langs__a[lang="ar"] { font-family: 'Noto Kufi Arabic Variable', system-ui, sans-serif; font-size: .95rem; }
+.langs__a:hover { background: var(--yellow); }
+.langs__a[aria-current] { background: var(--black); color: var(--yellow); }
+.menu__langs { margin-top: 1.6rem; align-self: flex-start; border-color: var(--yellow); }
+.menu__langs .langs__a { min-width: 3rem; height: 3rem; font-size: .95rem; }
+.menu__langs .langs__a + .langs__a { border-color: var(--yellow); }
+@media (max-width: 960px) { .hdr__langs { display: none; } }
